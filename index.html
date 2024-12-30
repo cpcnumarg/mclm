@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcul du nombre de MCLM</title>
+    <style>
+        /* Style du body pour centrer le contenu */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Prend toute la hauteur de la fenêtre */
+            display: flex; /* Utilisation de Flexbox */
+            justify-content: center; /* Centre horizontalement */
+            align-items: center; /* Centre verticalement */
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* Style du conteneur avec bordure et angles arrondis */
+        .container {
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 15px; /* Angle arrondi */
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; /* Réduit la largeur maximale du conteneur */
+        }
+
+        h1 {
+            text-align: center; /* Centre le titre */
+            font-size: 2em; /* Agrandit la taille du titre */
+            color: #333;
+            margin-bottom: 30px; /* Ajoute un espacement sous le titre */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .time-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .time-group input {
+            flex: 1;
+        }
+
+        .small-input {
+            width: 45%; /* Réduit les champs mais pas trop étroits */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: auto; /* Réduit la largeur du bouton */
+            margin: 0 auto; /* Centre le bouton horizontalement */
+            display: block; /* Nécessaire pour que margin: 0 auto fonctionne */
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .reset-button {
+            background-color: #dc3545; /* Fond rouge */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: auto;
+            margin-top: 10px;
+            float: right; /* Aligne le bouton à droite */
+        }
+
+        .reset-button:hover {
+            background-color: #c82333; /* Fond rouge foncé au survol */
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center; /* Centrer le texte du résultat */
+        }
+    </style>
+</head>
+<body>
+    <!-- Conteneur avec bordure et angles arrondis -->
+    <div class="container">
+        <h1>Calcul du nombre de MCLM</h1> <!-- Titre déplacé dans le conteneur -->
+        
+        <form id="mclmForm">
+            <div class="form-group">
+                <label for="totalWords">Nombre total de mots lus :</label>
+                <input type="number" id="totalWords" class="small-input" placeholder="Exemple : 120" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="errors">Nombre de mots incorrects :</label>
+                <input type="number" id="errors" class="small-input" placeholder="Exemple : 5" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Temps :</label>
+                <div class="time-group">
+                    <input type="number" id="minutes" placeholder="Minutes" min="0" required>
+                    <input type="number" id="seconds" placeholder="Secondes" min="0" max="59" required>
+                </div>
+            </div>
+            
+            <button type="submit">Calculer le nombre de MCLM</button> <!-- Texte du bouton modifié -->
+        </form>
+
+        <!-- Affichage du résultat -->
+        <div class="result" id="result"></div>
+
+        <!-- Bouton Réinitialiser -->
+        <button id="resetButton" class="reset-button" style="display:none;">Réinitialiser</button>
+    </div>
+
+    <script>
+        // Gestion du formulaire
+        document.getElementById('mclmForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Récupérer les données saisies
+            const totalWords = parseFloat(document.getElementById('totalWords').value);
+            const errors = parseFloat(document.getElementById('errors').value);
+            const minutes = parseFloat(document.getElementById('minutes').value);
+            const seconds = parseFloat(document.getElementById('seconds').value);
+
+            // Vérification pour éviter les entrées invalides et les valeurs négatives
+            if (isNaN(totalWords) || isNaN(errors) || isNaN(minutes) || isNaN(seconds) || minutes < 0 || seconds < 0) {
+                alert("Veuillez remplir tous les champs correctement et ne pas entrer de valeurs négatives.");
+                return;
+            }
+
+            // Convertir le temps en minutes (minutes + secondes/60)
+            const timeInMinutes = minutes + (seconds / 60);
+
+            // Calculer les mots corrects
+            const correctWords = totalWords - errors;
+
+            // Calculer le MCLM
+            const mclm = correctWords / timeInMinutes;
+
+            // Arrondir le MCLM à l'unité près
+            const mclmRounded = Math.round(mclm);
+
+            // Afficher le résultat avec la phrase demandée
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = `MCLM : ${mclmRounded} mots correctement lus par minute`;
+
+            // Afficher le bouton "Réinitialiser"
+            document.getElementById('resetButton').style.display = 'block';
+        });
+
+        // Gestion du bouton Réinitialiser
+        document.getElementById('resetButton').addEventListener('click', function() {
+            // Réinitialiser tous les champs
+            document.getElementById('mclmForm').reset();
+            
+            // Cacher le bouton Réinitialiser et le résultat
+            document.getElementById('resetButton').style.display = 'none';
+            document.getElementById('result').textContent = '';
+        });
+    </script>
+</body>
+</html>
