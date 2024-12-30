@@ -103,6 +103,13 @@
             font-size: 1.2em;
             font-weight: bold;
             text-align: center; /* Centrer le texte du résultat */
+            display: none; /* Cacher le résultat initialement */
+        }
+
+        .score {
+            font-size: 2.5em; /* Agrandir la taille du score */
+            font-weight: bold;
+            color: #28a745; /* Changer la couleur du score pour le mettre en vert */
         }
     </style>
 </head>
@@ -133,8 +140,10 @@
             <button type="submit">Calculer le nombre de MCLM</button> <!-- Texte du bouton modifié -->
         </form>
 
-        <!-- Affichage du résultat -->
-        <div class="result" id="result"></div>
+        <!-- Affichage du résultat avec MCLM -->
+        <div class="result" id="result">
+            MCLM : <span id="mclmScore" class="score"></span>
+        </div>
 
         <!-- Bouton Réinitialiser -->
         <button id="resetButton" class="reset-button" style="display:none;">Réinitialiser</button>
@@ -171,7 +180,9 @@
 
             // Afficher le résultat avec la phrase demandée
             const resultDiv = document.getElementById('result');
-            resultDiv.textContent = `MCLM : ${mclmRounded} mots correctement lus par minute`;
+            const scoreDiv = document.getElementById('mclmScore');
+            resultDiv.style.display = 'block'; // Afficher le résultat
+            scoreDiv.textContent = mclmRounded; // Afficher seulement le score
 
             // Afficher le bouton "Réinitialiser"
             document.getElementById('resetButton').style.display = 'block';
@@ -184,7 +195,7 @@
             
             // Cacher le bouton Réinitialiser et le résultat
             document.getElementById('resetButton').style.display = 'none';
-            document.getElementById('result').textContent = '';
+            document.getElementById('result').style.display = 'none'; // Cacher le résultat
         });
     </script>
 </body>
