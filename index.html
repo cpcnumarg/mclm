@@ -27,6 +27,13 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px; /* Réduit la largeur maximale du conteneur */
+            text-align: center;
+        }
+
+        img {
+            max-width: 90%; /* S'assure que l'image ne dépasse pas 90% de la largeur du conteneur */
+            height: auto; /* Garde les proportions de l'image */
+            margin-bottom: 20px; /* Ajoute un espace sous l'image */
         }
 
         h1 {
@@ -116,6 +123,9 @@
 <body>
     <!-- Conteneur avec bordure et angles arrondis -->
     <div class="container">
+        <!-- Image ajoutée au-dessus du titre -->
+        <img src="https://prim61.ac-normandie.fr/sites/prim61.ac-normandie.fr/IMG/png/logo3.png" alt="Logo descriptif">
+        
         <h1>Calcul du nombre de MCLM</h1> <!-- Titre déplacé dans le conteneur -->
         
         <form id="mclmForm">
@@ -178,7 +188,7 @@
             // Arrondir le MCLM à l'unité près
             const mclmRounded = Math.round(mclm);
 
-            // Afficher le résultat avec la phrase demandée
+            // Afficher le résultat
             const resultDiv = document.getElementById('result');
             const scoreDiv = document.getElementById('mclmScore');
             resultDiv.style.display = 'block'; // Afficher le résultat
